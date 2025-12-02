@@ -1,2 +1,0 @@
-# Information_system_for_recording_employment_of_MUIV_graduates
-My thesis
