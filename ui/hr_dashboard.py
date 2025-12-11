@@ -7,9 +7,9 @@ from ui.report_export_window import ReportExportWindow
 from ui.help_window import HelpWindow
 from ui.settings_window import SettingsWindow
 
-class HRDashboard(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
+class HRDashboard(BaseWindow):
     def __init__(self, root, user_data):
-        super().__init__(root, user_data, "Панель HR-специалиста — МУИВ")  # ← вызов родителя
+        super().__init__(root, user_data, "Панель HR-специалиста — МУИВ")
         self.create_menu()
         self.setup_ui()
 
@@ -37,7 +37,7 @@ class HRDashboard(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
     def setup_ui(self):
         # Заголовок
         title = tk.Label(
-            self.main_frame,  # ← ИСПОЛЬЗУЕМ main_frame из BaseWindow
+            self.main_frame,
             text="Панель HR-специалиста",
             font=("Arial", 16, "bold"),
             bg="#f9f9f9",
@@ -63,7 +63,7 @@ class HRDashboard(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
 
         for text, command in actions:
             btn = tk.Button(
-                self.main_frame,  # ← кнопки внутри main_frame
+                self.main_frame,
                 text=text, command=command,
                 bg="#2196F3", fg="white", font=("Arial", 10),
                 width=40, height=1, relief="flat", cursor="hand2"
@@ -91,4 +91,5 @@ class HRDashboard(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
         self.root.destroy()
         new_root = tk.Tk()
         LoginWindow(new_root)
+
         new_root.mainloop()
