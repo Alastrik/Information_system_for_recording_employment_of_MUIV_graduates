@@ -6,9 +6,9 @@ from ui.employment_form import EmploymentFormWindow
 from ui.help_window import HelpWindow
 from ui.settings_window import SettingsWindow
 
-class GraduateProfile(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
+class GraduateProfile(BaseWindow):
     def __init__(self, root, user_data):
-        super().__init__(root, user_data, "Личный кабинет выпускника — МУИВ")  # ← вызов родителя
+        super().__init__(root, user_data, "Личный кабинет выпускника — МУИВ")
         self.create_menu()
         self.setup_ui()
 
@@ -34,7 +34,7 @@ class GraduateProfile(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
     def setup_ui(self):
         # Заголовок
         tk.Label(
-            self.main_frame,  # ← ИСПОЛЬЗУЕМ main_frame из BaseWindow
+            self.main_frame,
             text="Личный кабинет выпускника",
             font=("Arial", 16, "bold"),
             bg="#f9f9f9",
@@ -68,7 +68,7 @@ class GraduateProfile(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
 
         for text, command in actions:
             tk.Button(
-                self.main_frame,  # ← кнопки внутри main_frame
+                self.main_frame,
                 text=text,
                 command=command,
                 font=("Arial", 10),
@@ -89,4 +89,5 @@ class GraduateProfile(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
         self.root.destroy()
         new_root = tk.Tk()
         LoginWindow(new_root)
+
         new_root.mainloop()
