@@ -1,5 +1,4 @@
 # Модуль подключения к PostgreSQL и выполнения SQL-запросов
-# Используется библиотека psycopg2
 
 import psycopg2
 from psycopg2 import sql
@@ -59,4 +58,5 @@ class DatabaseConnection:
         except Exception as e:
             self.connection.rollback()
             logging.error(f"Ошибка выполнения запроса: {e}")
+
             raise
