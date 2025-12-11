@@ -12,7 +12,6 @@ class BaseWindow:
         self.root.configure(bg="#f9f9f9")
         self.root.resizable(True, True)
 
-        # Загружаем логотип
         self.original_logo = None
         self.logo_label = None
         self.load_original_logo()
@@ -20,11 +19,9 @@ class BaseWindow:
         self.logo_label = tk.Label(self.root, bg="#f9f9f9", borderwidth=0, highlightthickness=0)
         self.logo_label.place(x=15, y=15)
 
-        # ОСНОВНОЙ ФРЕЙМ ДЛЯ КОНТЕНТА
         self.main_frame = tk.Frame(self.root, bg="#f9f9f9")
         self.main_frame.pack(fill="both", expand=True, padx=20, pady=60)
 
-        # Отслеживаем изменение размера
         self.root.bind("<Configure>", self.on_window_resize)
         self.update_logo_size()
 
@@ -56,9 +53,9 @@ class BaseWindow:
         except Exception as e:
             print(f"Ошибка масштабирования: {e}")
 
-    # === ВАЖНО: ДОБАВЛЕН МЕТОД ОБРАТНОЙ СВЯЗИ ===
     def create_status_label(self, text, color="green"):
         """Создаёт временную метку обратной связи (исчезает через 3 сек)."""
         status = tk.Label(self.main_frame, text=text, fg=color, bg="#f9f9f9", font=("Arial", 9, "bold"))
         status.pack(pady=5)
+
         self.root.after(3000, status.destroy)
