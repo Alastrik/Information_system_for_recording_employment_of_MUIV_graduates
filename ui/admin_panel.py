@@ -7,9 +7,9 @@ from ui.search_window import SearchWindow
 from ui.settings_window import SettingsWindow
 from ui.help_window import HelpWindow
 
-class AdminPanel(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
+class AdminPanel(BaseWindow):
     def __init__(self, root, user_data):
-        super().__init__(root, user_data, "Панель администратора — МУИВ")  # ← вызов родителя
+        super().__init__(root, user_data, "Панель администратора — МУИВ")
         self.create_menu()
         self.setup_ui()
 
@@ -78,7 +78,7 @@ class AdminPanel(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
 
     def open_search(self):
         SearchWindow(self.root)
-        self.create_status_label("Открыто окно поиска")  # ← теперь работает!
+        self.create_status_label("Открыто окно поиска")
 
     def open_settings(self):
         from ui.settings_window import SettingsWindow
@@ -90,4 +90,5 @@ class AdminPanel(BaseWindow):  # ← НАСЛЕДУЕТСЯ от BaseWindow
         self.root.destroy()
         new_root = tk.Tk()
         LoginWindow(new_root)
+
         new_root.mainloop()
