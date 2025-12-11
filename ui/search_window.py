@@ -72,7 +72,7 @@ class SearchWindow:
         columns = ("ФИО", "Год выпуска", "Факультет", "Компания", "Должность", "Статус")
         self.tree = ttk.Treeview(self.window, columns=columns, show="headings", height=12)
 
-        # Настройка стиля (если ещё не настроен глобально)
+        # Настройка стиля
         style = ttk.Style()
         style.configure("Treeview", font=("Arial", 9), rowheight=25)
         style.configure("Treeview.Heading", font=("Arial", 10, "bold"))
@@ -144,4 +144,5 @@ class SearchWindow:
     def __del__(self):
         """Закрываем соединение с БД при уничтожении окна."""
         if hasattr(self, 'db') and self.db.connection:
+
             self.db.disconnect()
