@@ -76,11 +76,10 @@ class LoginWindow:
         user = self.auth_service.authenticate(username, password)
         if user:
             self.root.destroy()
-            self.open_main_interface(user)  # ← Теперь метод есть!
+            self.open_main_interface(user)
         else:
             messagebox.showerror("Ошибка", "Неверный логин или пароль!")
 
-    # === ДОБАВЛЕННЫЙ МЕТОД ===
     def open_main_interface(self, user_data):
         """Открывает главное окно в зависимости от роли пользователя."""
         root = tk.Tk()
@@ -97,4 +96,5 @@ class LoginWindow:
         else:
             messagebox.showerror("Ошибка", "Неизвестная роль пользователя!")
             return
+
         root.mainloop()
