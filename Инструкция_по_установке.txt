@@ -1,0 +1,42 @@
+ИНСТРУКЦИЯ ПО УСТАНОВКЕ И ЗАПУСКУ ПРОГРАММЫ
+
+1. ТРЕБОВАНИЯ
+  ОС: Windows 10/11
+  Python 3.12 (https://www.python.org/downloads/)
+  PostgreSQL 15 (https://www.postgresql.org/download/)
+
+2. НАСТРОЙКА БАЗЫ ДАННЫХ
+   2.1. Установите PostgreSQL.
+   2.2. Создайте базу данных:
+        Имя: muiv_employment
+        Владелец: postgres
+   2.3. Откройте pgAdmin, подключитесь к БД.
+   2.4. Выполните SQL-скрипт:
+       Файл: database_schema.sql
+       Это создаст все таблицы.
+   2.5. Запустите в терминале:
+        python init_db.py
+        → Это добавит демо-пользователей.
+
+3. УСТАНОВКА ЗАВИСИМОСТЕЙ
+   Откройте терминал в папке проекта и выполните:
+      pip install -r requirements.txt
+
+4. ЗАПУСК ПРИЛОЖЕНИЯ
+   В терминале выполните:
+      python main.py
+
+5. ВХОД В СИСТЕМУ
+   Используйте учётные данные:
+  Администратор: admin / admin123
+  HR: hr_muiiv / hrpass2025
+  Выпускник: graduate_001 / grad2025
+
+6. СБОРКА В ИСПОЛНЯЕМЫЙ ФАЙЛ (.exe)
+   Выполните:
+      pyinstaller MUIV_Employment.spec
+   Результат: dist/MUIV_Employment.exe
+
+7. ВАЖНО
+  Приложение требует запущенного PostgreSQL.
+  Файл МУИВ.png должен находиться в корне проекта.

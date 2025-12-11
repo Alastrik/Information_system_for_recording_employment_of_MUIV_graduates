@@ -17,9 +17,8 @@ class ReportExportWindow:
         self.window.geometry("500x250")
         self.center_window(parent)
 
-        self.user_data = user_data
-        self.db = DatabaseConnection()
-        self.db.connect()
+        # Папка по умолчанию для отчётов
+        self.default_dir = os.path.join(os.path.expanduser("~"), "MUIV_Employment_Reports")
 
         tk.Label(self.window, text="Выберите формат отчёта", font=("Arial", 12, "bold")).pack(pady=20)
 
@@ -34,30 +33,33 @@ class ReportExportWindow:
         y = parent.winfo_rooty() + 100
         self.window.geometry(f"500x250+{x}+{y}")
 
-    def fetch_employment_data(self):
-        """Заглушка: возвращает демо-данные. В реальном проекте — запрос к БД."""
-        return [
-            {
-                "full_name": "Иванов Иван Иванович",
-                "graduation_year": 2024,
-                "company": "ООО 'ТехноПрогресс'",
-                "position": "Программист",
-                "status": "Работает"
-            },
-            {
-                "full_name": "Петрова Анна Сергеевна",
-                "graduation_year": 2023,
-                "company": "АО 'Финора'",
-                "position": "Аналитик",
-                "status": "Уволена"
-            }
-        ]
-
     def export_docx(self):
-        self._export("docx")
+        filepath = filedialog.asksaveasfilename(
+            initialdir=self.default_dir,
+            defaultextension=".docx",
+            filetypes=[("Word документ", "*.docx")]
+        )
+        if filepath:
+            try:
+                DocxReportGenerator.generate_employment_report(filepath)
+                messagebox.showinfo("Успех", f"Отчёт сохранён:\n{filepath}")
+                self.window.destroy()
+            except Exception as e:
+                messagebox.showerror("Ошибка", f"Не удалось создать отчёт:\n{e}")
 
     def export_xlsx(self):
-        self._export("xlsx")
+        filepath = filedialog.asksaveasfilename(
+            initialdir=self.default_dir,
+            defaultextension=".xlsx",
+            filetypes=[("Excel файл", "*.xlsx")]
+        )
+        if filepath:
+            try:
+                XlsxReportGenerator.generate_employment_report(filepath)
+                messagebox.showinfo("Успех", f"Отчёт сохранён:\n{filepath}")
+                self.window.destroy()
+            except Exception as e:
+                messagebox.showerror("Ошибка", f"Не удалось создать отчёт:\n{e}")
 
     def _export(self, fmt):
         try:
