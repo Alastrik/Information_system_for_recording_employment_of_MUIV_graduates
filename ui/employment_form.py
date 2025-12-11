@@ -79,11 +79,11 @@ class EmploymentFormWindow:
     def setup_ui(self):
         if self.user_data['role'] == 'graduate':
             self.setup_graduate_ui()
-        else:  # manager
+        else:
             self.setup_hr_ui()
 
     def setup_graduate_ui(self):
-        # === Блок: ФИО, email, год выпуска (только для выпускника) ===
+        #Блок: ФИО, email, год выпуска (только для выпускника) 
         fio_frame = tk.LabelFrame(self.window, text="Ваши данные", font=("Arial", 10, "bold"), bg="#f9f9f9", padx=10, pady=10)
         fio_frame.pack(padx=20, pady=10, fill="x")
 
@@ -113,7 +113,7 @@ class EmploymentFormWindow:
         self.setup_common_ui()
 
     def setup_hr_ui(self):
-        # === Блок: Выбор выпускника (только для HR) ===
+        #Блок: Выбор выпускника (только для HR)
         grad_frame = tk.LabelFrame(self.window, text="Выберите выпускника", font=("Arial", 10, "bold"), bg="#f9f9f9", padx=10, pady=10)
         grad_frame.pack(padx=20, pady=10, fill="x")
 
@@ -125,7 +125,7 @@ class EmploymentFormWindow:
         self.setup_common_ui()
 
     def setup_common_ui(self):
-        # === Блок: Место работы ===
+        #Блок: Место работы
         work_frame = tk.LabelFrame(self.window, text="Место работы", font=("Arial", 10, "bold"), bg="#f9f9f9", padx=10, pady=10)
         work_frame.pack(padx=20, pady=10, fill="x")
 
@@ -141,7 +141,7 @@ class EmploymentFormWindow:
         self.status_combo = ttk.Combobox(work_frame, state="readonly", width=37, font=("Arial", 10))
         self.status_combo.grid(row=2, column=1, padx=10, pady=3, columnspan=2)
 
-        # === Блок: Дополнительно ===
+        #Блок: Дополнительно
         extra_frame = tk.LabelFrame(self.window, text="Дополнительно", font=("Arial", 10, "bold"), bg="#f9f9f9", padx=10, pady=10)
         extra_frame.pack(padx=20, pady=10, fill="x")
 
@@ -179,28 +179,22 @@ class EmploymentFormWindow:
         if not graduate_name:
             return
         graduate_id = self.graduate_options[graduate_name]
-        # Проверяем, есть ли уже запись в employment
         emp = self.db.execute_query(
             "SELECT id, company_id, position_id, status_id, start_date, salary, is_current FROM employment WHERE graduate_id = %s",
             (graduate_id,), fetch=True
         )
         if emp:
-            # Заполняем форму
             self.employment_id = emp[0][0]
-            # Заполняем организацию
             if emp[0][1]:
                 company = self.db.execute_query("SELECT name FROM company WHERE id = %s", (emp[0][1],), fetch=True)
                 self.company_entry.delete(0, tk.END)
                 self.company_entry.insert(0, company[0][0] if company else "")
-            # Должность
             if emp[0][2]:
                 pos = self.db.execute_query("SELECT title FROM position WHERE id = %s", (emp[0][2],), fetch=True)
                 self.position_combo.set(pos[0][0] if pos else "")
-            # Статус
             if emp[0][3]:
                 status = self.db.execute_query("SELECT status_name FROM employment_status WHERE id = %s", (emp[0][3],), fetch=True)
                 self.status_combo.set(status[0][0] if status else "")
-            # Дата и зарплата
             self.date_entry.delete(0, tk.END)
             self.date_entry.insert(0, emp[0][4].strftime("%Y-%m-%d") if emp[0][4] else "2025-01-01")
             self.salary_entry.delete(0, tk.END)
@@ -226,7 +220,6 @@ class EmploymentFormWindow:
     def save_employment(self):
         try:
             if self.user_data['role'] == 'graduate':
-                # Для выпускника — сохраняем его профиль + трудоустройство
                 last_name = self.last_name_entry.get().strip()
                 first_name = self.first_name_entry.get().strip()
                 if not last_name or not first_name:
@@ -244,7 +237,6 @@ class EmploymentFormWindow:
                     messagebox.showwarning("Ошибка", "Год выпуска должен быть числом!")
                     return
 
-                # Получаем graduate_id (создаём, если нужно)
                 user_id = self.user_data['user_id']
                 profile = self.db.execute_query(
                     "SELECT id FROM user_profile WHERE user_id = %s", (user_id,), fetch=True
@@ -254,7 +246,6 @@ class EmploymentFormWindow:
                 )
                 if grad_check:
                     graduate_id = grad_check[0][0]
-                    # Обновляем профиль
                     self.db.execute_query("""
                         UPDATE graduate SET full_name=%s, graduation_year=%s, email=%s WHERE id=%s
                     """, (full_name, graduation_year, email if email else None, graduate_id))
@@ -267,15 +258,13 @@ class EmploymentFormWindow:
                         "SELECT id FROM graduate WHERE user_profile_id = %s", (profile,), fetch=True
                     )[0][0]
 
-            else:  # HR
-                # Для HR — получаем graduate_id из выбора
+            else:
                 graduate_name = self.graduate_combo.get()
                 if not graduate_name:
                     messagebox.showwarning("Ошибка", "Выберите выпускника!")
                     return
                 graduate_id = self.graduate_options[graduate_name]
 
-            # === Обработка трудоустройства ===
             company_name = self.company_entry.get().strip()
             status = self.status_combo.get()
             if status not in ["Уволен", "Не работает", "Ищет работу"] and not company_name:
@@ -287,7 +276,6 @@ class EmploymentFormWindow:
                 messagebox.showwarning("Ошибка", "Выберите должность!")
                 return
 
-            # Сохраняем компанию
             company_id = None
             if company_name:
                 comp_check = self.db.execute_query("SELECT id FROM company WHERE name = %s", (company_name,), fetch=True)
@@ -344,4 +332,5 @@ class EmploymentFormWindow:
             res = self.db.execute_query("SELECT id FROM industry ORDER BY id LIMIT 1", fetch=True)
             return res[0][0] if res else 1
         except:
+
             return 1
